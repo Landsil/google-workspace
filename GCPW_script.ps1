@@ -59,15 +59,17 @@ if ([Environment]::Is64BitOperatingSystem) {
     $gcpwFileName = 'gcpwstandaloneenterprise64.msi'
 }
 
+<# Download the Chrome installer. #>
+$chromeUrlPrefix = 'https://dl.google.com/chrome/install/'
+$chromeUri = $chromeUrlPrefix + $chromeFileName
+Write-Host 'Downloading Chrome from' $chromeUri
+Invoke-WebRequest -Uri $chromeUri -OutFile $chromeFileName
+
 <# Download the GCPW installer. #>
 $gcpwUrlPrefix = 'https://dl.google.com/credentialprovider/'
 $gcpwUri = $gcpwUrlPrefix + $gcpwFileName
 Write-Host 'Downloading GCPW from' $gcpwUri
 Invoke-WebRequest -Uri $gcpwUri -OutFile $gcpwFileName
-
-<# Run the Chrome installer and wait for the installation to finish #>
-$arguments = "/i `"$chromeFileName`""
-$installProcess = (Start-Process msiexec.exe -ArgumentList $arguments -PassThru -Wait)
 
 <# Run the Chrome installer and wait for the installation to finish #>
 $arguments = "/i `"$chromeFileName`""
